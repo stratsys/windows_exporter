@@ -6,6 +6,7 @@
 package collector
 
 import (
+	"github.com/elastic/go-sysinfo"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
 )
@@ -45,6 +46,7 @@ type MemoryCollector struct {
 	SystemCodeTotalBytes            *prometheus.Desc
 	SystemDriverResidentBytes       *prometheus.Desc
 	SystemDriverTotalBytes          *prometheus.Desc
+	TotalPhysicalBytes              *prometheus.Desc
 	TransitionFaultsTotal           *prometheus.Desc
 	TransitionPagesRepurposedTotal  *prometheus.Desc
 	WriteCopiesTotal                *prometheus.Desc
@@ -232,6 +234,12 @@ func NewMemoryCollector() (Collector, error) {
 			nil,
 			nil,
 		),
+		TotalPhysicalBytes: prometheus.NewDesc(
+			prometheus.BuildFQName(Namespace, subsystem, "total_physical_bytes"),
+			"The total number of physical bytes installed in the system",
+			nil,
+			nil,
+		),
 		TransitionFaultsTotal: prometheus.NewDesc(
 			prometheus.BuildFQName(Namespace, subsystem, "transition_faults_total"),
 			"(TransitionFaultsPersec)",
@@ -303,6 +311,16 @@ type memory struct {
 func (c *MemoryCollector) collect(ctx *ScrapeContext, ch chan<- prometheus.Metric) (*prometheus.Desc, error) {
 	var dst []memory
 	if err := unmarshalObject(ctx.perfObjects["Memory"], &dst); err != nil {
+		return nil, err
+	}
+
+	hostInfo, err := sysinfo.Host()
+	if err != nil {
+		return nil, err
+	}
+
+	memInfo, err := hostInfo.Memory()
+	if err != nil {
 		return nil, err
 	}
 
@@ -478,6 +496,12 @@ func (c *MemoryCollector) collect(ctx *ScrapeContext, ch chan<- prometheus.Metri
 		c.SystemDriverTotalBytes,
 		prometheus.GaugeValue,
 		dst[0].SystemDriverTotalBytes,
+	)
+
+	ch <- prometheus.MustNewConstMetric(
+		c.TotalPhysicalBytes,
+		prometheus.GaugeValue,
+		float64(memInfo.Total),
 	)
 
 	ch <- prometheus.MustNewConstMetric(
