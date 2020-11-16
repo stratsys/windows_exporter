@@ -1,0 +1,19 @@
+steps:
+  - script: |
+      . build.sh
+    displayName: 'Build Docker image'
+
+  - task: CopyFiles@2
+    inputs:
+      contents: |
+        windows_exporter.exe
+        windows_exporter.sum
+      targetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'publish pipeline artifacts'
+    inputs:
+      targetPath: ' $(Build.ArtifactStagingDirectory)' 
+      artifactName:  'artifacts'
+
+pool: "Linux-Docker"
