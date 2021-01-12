@@ -5,10 +5,11 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
-RUN GOOS=windows CGO_ENABLED=0 go build -o windows_exporter.exe -ldflags "-s -w"
-RUN upx windows_exporter.exe
+RUN ARTIFACT_PREFIX="windows_exporter-$VERSION_TAG"
+RUN GOOS=windows CGO_ENABLED=0 go build -o "$ARTIFACT_PREFIX.exe" -ldflags "-s -w"
+RUN upx "$ARTIFACT_PREFIX.exe"
 
-RUN sha256sum windows_exporter.exe > windows_exporter.sum
-RUN cat windows_exporter.sum
+RUN sha256sum windows_exporter.exe > "$ARTIFACT_PREFIX.sum"
+RUN cat "$ARTIFACT_PREFIX.sum"
 
-ENTRYPOINT ["tar", "cf", "-", "windows_exporter.exe", "windows_exporter.sum"]
+ENTRYPOINT ["tar", "cf", "-", "$ARTIFACT_PREFIX.exe", "$ARTIFACT_PREFIX.sum"]

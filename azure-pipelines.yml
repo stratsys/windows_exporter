@@ -1,13 +1,19 @@
 steps:
   - script: |
+      . set_pipeline_variables.sh
+    displayName: Set Pipeline Variables
+
+  - script: |
       . build.sh
     displayName: 'Build Docker image'
+    env:
+      VERSION_TAG: $(VERSION_TAG)
 
   - task: CopyFiles@2
     inputs:
       contents: |
-        windows_exporter.exe
-        windows_exporter.sum
+        windows_exporter*.exe
+        windows_exporter*.sum
       targetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: PublishPipelineArtifact@1
@@ -15,5 +21,6 @@ steps:
     inputs:
       targetPath: ' $(Build.ArtifactStagingDirectory)' 
       artifactName:  'artifacts'
+
 
 pool: "Linux-Docker"
