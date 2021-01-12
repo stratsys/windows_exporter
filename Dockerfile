@@ -13,4 +13,4 @@ RUN upx "$ARTIFACT_PREFIX.exe"
 RUN sha256sum "$ARTIFACT_PREFIX.exe" > "$ARTIFACT_PREFIX.sum"
 RUN cat "$ARTIFACT_PREFIX.sum"
 
-ENTRYPOINT ["tar", "cf", "-", "$ARTIFACT_PREFIX.exe", "$ARTIFACT_PREFIX.sum"]
+ENTRYPOINT ["tar", "cf", "-", "${ARTIFACT_PREFIX}.exe", "${ARTIFACT_PREFIX}.sum"]
