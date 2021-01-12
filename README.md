@@ -14,6 +14,7 @@ Name     | Description | Enabled by default
 [cpu](docs/collector.cpu.md) | CPU usage | &#10003;
 [cs](docs/collector.cs.md) | "Computer System" metrics (system properties, num cpus/total memory) | &#10003;
 [container](docs/collector.container.md) | Container metrics |
+[dfsr](docs/collector.dfsr.md) | DFSR metrics |
 [dhcp](docs/collector.dhcp.md) | DHCP Server |
 [dns](docs/collector.dns.md) | DNS Server |
 [exchange](docs/collector.exchange.md) | Exchange metrics |
@@ -38,6 +39,7 @@ Name     | Description | Enabled by default
 [process](docs/collector.process.md) | Per-process metrics |
 [remote_fx](docs/collector.remote_fx.md) | RemoteFX protocol (RDP) metrics |
 [service](docs/collector.service.md) | Service state metrics | &#10003;
+[smtp](docs/collector.smtp.md) | IIS SMTP Server |
 [system](docs/collector.system.md) | System calls | &#10003;
 [tcp](docs/collector.tcp.md) | TCP connections |
 [time](docs/collector.time.md) | Windows Time Service |
@@ -109,10 +111,9 @@ On some older versions of Windows you may need to surround parameter values with
 msiexec /i C:\Users\Administrator\Downloads\windows_exporter.msi ENABLED_COLLECTORS="ad,iis,logon,memory,process,tcp,thermalzone" TEXTFILE_DIR="C:\custom_metrics\"
 ```
 
-## Roadmap
+## Supported versions
 
-See [open issues](https://github.com/prometheus-community/windows_exporter/issues)
-
+windows_exporter supports Windows Server versions 2008R2 and later, and desktop Windows version 7 and later.
 
 ## Usage
 
