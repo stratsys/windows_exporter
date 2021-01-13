@@ -1,6 +1,6 @@
 FROM golang:1.15.5-alpine3.12
 ARG VERSION_TAG
-ENV ARTIFACT_PREFIX="windows_exporter-$VERSION_TAG"
+ENV ARTIFACT_PREFIX="sf_windows_exporter-$VERSION_TAG"
 RUN apk add upx --no-cache
 WORKDIR /build
 COPY go.mod go.sum ./
