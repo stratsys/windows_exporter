@@ -13,6 +13,7 @@ steps:
     inputs:
       contents: 'build/**'
       targetFolder: $(Build.ArtifactStagingDirectory)
+      flattenFolders: true
 
   - task: PublishPipelineArtifact@1
     displayName: 'publish pipeline artifacts'
