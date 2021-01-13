@@ -13,4 +13,4 @@ RUN upx "$ARTIFACT_PREFIX.exe"
 RUN sha256sum "$ARTIFACT_PREFIX.exe" > "$ARTIFACT_PREFIX.sum"
 RUN cat "$ARTIFACT_PREFIX.sum"
 
-ENTRYPOINT tar cf - $(find /build -name 'windows_exporter-*' -type f)
+ENTRYPOINT tar cf - $(find /build -name 'sf_windows_exporter-*' -type f)
