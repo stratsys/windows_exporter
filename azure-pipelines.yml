@@ -11,9 +11,7 @@ steps:
 
   - task: CopyFiles@2
     inputs:
-      contents: |
-        windows_exporter*.exe
-        windows_exporter*.sum
+      contents: 'build/**'
       targetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: PublishPipelineArtifact@1
